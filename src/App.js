@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import TodoListTemplate from "./component/TodoListTemplate";
 import Form from "./component/Form";
 import TodoItemList from "./component/TodoItemList";
+import Palette from './component/Palette'
+
+const colors = ["#343a40", "#f03e3e", "#12b886", "#228ae6"];
 
 class App extends Component {
   id = 0;
@@ -9,6 +12,7 @@ class App extends Component {
   state = {
     input: "",
     todos: [],
+    color: "#343a40",
   };
 
   handleChange = (e) => {
@@ -18,13 +22,14 @@ class App extends Component {
   };
 
   handleCreate = () => {
-    const { input, todos } = this.state;
+    const { input, todos, color } = this.state;
     this.setState({
       input: "",
       todos: todos.concat({
         id: this.id++,
         text: input,
         checked: false,
+        color
       }),
     });
   };
@@ -58,14 +63,21 @@ class App extends Component {
     });
   };
 
+  handleSelectColor = (color) => {
+    this.setState({
+      color,
+    });
+  };
+
   render() {
-    const { input, todos } = this.state;
+    const { input, todos, color } = this.state;
     const {
       handleChange,
       handleCreate,
       handleKeyPress,
       handleToggle,
       handleRemove,
+      handleSelectColor,
     } = this;
 
     return (
@@ -76,6 +88,14 @@ class App extends Component {
             onKeyPress={handleKeyPress}
             onChange={handleChange}
             onCreate={handleCreate}
+            color={color}
+          />
+        }
+        palette={
+          <Palette
+            colors={colors}
+            selected={color}
+            onSelect={handleSelectColor}
           />
         }
       >
